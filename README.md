@@ -199,6 +199,8 @@ If any prerequisite cannot be verified:
 
 Remain in Research Mode.
 
+If any single Technical Precondition cannot be verified, Agent Nickel remains in Research Mode in full. There is no partial authorization for live trading.
+
 Do not weaken the Constitution or alter the strategy solely to accommodate platform limitations.
 
 ⸻
