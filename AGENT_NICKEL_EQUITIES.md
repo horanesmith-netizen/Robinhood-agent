@@ -1,6 +1,6 @@
 AGENT NICKEL — EQUITIES STRATEGY
 
-Version 2.0 — Reconciled Build
+Version 2.1 — Grading Mechanic Fix
 
 Track 1 — Equities / SPY
 
@@ -321,17 +321,23 @@ without changing live execution rules during the initial validation sample.
 
 11. GRADE CONDITIONS
 
-Once the baseline gate is satisfied, evaluate three additional conditions.
+Once the baseline gate is satisfied, evaluate two base-grade conditions.
 
 Condition A — Daily 50 EMA Confluence
 
 Daily 50 EMA lies within 1% of PDL.
 
-**Condition B — Volume Confirmation**
+Condition C — Aggressive Regime
+
+Current regime classification is Aggressive.
+
+**Volume Upgrade Condition**
+
+Volume Confirmation is not a base-grade condition. Per AGENT_NICKEL_CORE.md, it is evaluated separately and applied as a one-level grade upgrade after the base grade is determined (see Section 12).
 
 Formula: **Volume Ratio = Candle Volume ÷ Trailing Average Volume**, evaluated independently for the reclaim candle and the confirmation candle.
 
-**Either-candle rule:** Condition B is satisfied if EITHER the reclaim candle OR the confirmation candle independently has a Volume Ratio > 1.3. Both candles are not required to qualify.
+**Either-candle rule:** Volume Confirmation is satisfied if EITHER the reclaim candle OR the confirmation candle independently has a Volume Ratio > 1.3. Both candles are not required to qualify.
 
 **Trailing average definition:** for a given candle, Trailing Average Volume = the arithmetic mean volume of the 20 completed 1-minute candles immediately preceding that candle. The candle being evaluated is always excluded from its own average — the average is computed strictly from candles before it.
 
@@ -339,19 +345,25 @@ Formula: **Volume Ratio = Candle Volume ÷ Trailing Average Volume**, evaluated 
 
 **Insufficient data:** if fewer than 20 completed 1-minute candles have occurred since session open at the time either the reclaim or confirmation candle forms, Volume Confirmation defaults to NOT SATISFIED for that candle. It does not fall back to a shorter average.
 
-Condition C — Aggressive Regime
-
-Current regime classification is Aggressive.
-
 ⸻
 
 12. SETUP GRADING
 
-Grade	Qualification
-A+	Baseline + all 3 additional conditions
-A	Baseline + 2 additional conditions
+Base Grade	Qualification
+A	Baseline + both additional conditions (EMA Confluence + Aggressive Regime)
 B	Baseline + 1 additional condition
 No Trade	Baseline + 0 additional conditions
+
+**Volume Upgrade (applied after base grade):**
+
+If Volume Confirmation is satisfied, upgrade the base grade by one level:
+
+* B → A
+* A → A+
+
+A+ is not reachable as a base grade — it is only reached via Volume Upgrade from base A.
+
+No Trade is not upgrade-eligible. The CORE Volume Upgrade defines only B→A and A→A+; it does not create a No Trade→B transition. A setup must therefore independently qualify for at least a B base grade before Volume Confirmation can affect its grade.
 
 Grades are mandatory research classifications.
 
@@ -886,6 +898,10 @@ Live authorization requires successful Robinhood capability verification and sat
 ⸻
 
 VERSION HISTORY
+
+v2.1 — Grading Mechanic Fix
+
+* Fixed §11–12 grading mechanic to match AGENT_NICKEL_CORE.md: Volume Confirmation is now a one-level post-hoc grade upgrade (B→A, A→A+, capped at A+), not a tied third condition. No change to Initial Validation risk treatment (still flat 3% regardless of grade). No prior committed version had this fix — v1.0–v2.0 all had the tied-condition error.
 
 v2.0 — Reconciled Build
 
