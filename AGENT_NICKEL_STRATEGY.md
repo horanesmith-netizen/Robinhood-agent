@@ -11,6 +11,32 @@ Owner: Agent Nickel Capital
 
 ⸻
 
+⚠️ SUPERSEDED — HISTORICAL DOCUMENT. NOT CURRENT AUTHORITY.
+
+This document represents the original conservative research design
+for Agent Nickel (Version 0.2). Its risk sizing (Section 14, flat
+0.50%/trade), daily circuit breaker (Section 16, 1.0%/day), mission
+language (Section 1, "the objective is NOT to maximize profits"),
+grading, position management, and autonomy assumptions throughout
+this document are historical and do NOT reflect current authority.
+
+The current governing documents are:
+- CLAUDE.md (Constitution — supreme authority)
+- AGENT_NICKEL_CORE.md (universal operating philosophy and pipeline)
+- The applicable active asset-class strategy file (e.g.
+  AGENT_NICKEL_EQUITIES.md for equities/ETFs)
+
+The Previous-Day Low (PDL) reclaim mechanics defined below (support
+zone, breach threshold, reclaim confirmation, entry/stop calculation)
+remain valid ONLY to the extent that the active asset-class strategy
+file explicitly incorporates them by reference. They carry no
+independent authority of their own.
+
+This document is retained for historical and audit-trail purposes
+only.
+
+⸻
+
 Strategy Name
 
 Previous-Day Low Support Reclaim — Long

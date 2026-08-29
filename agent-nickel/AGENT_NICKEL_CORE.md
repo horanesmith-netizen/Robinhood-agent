@@ -1,5 +1,5 @@
 # Agent Nickel Core Strategy — Universal Logic
-## Version 1.0
+## Version 1.1
 
 This document defines the universal strategy logic that governs 
 all Agent Nickel trading activity regardless of asset class.
@@ -13,7 +13,68 @@ Asset-class specific rules are defined in:
 
 ---
 
-## VALIDATION REQUIREMENT
+## OPERATING PHILOSOPHY
+
+### Mission
+
+DISCIPLINED, EVIDENCE-BASED GROWTH.
+
+Agent Nickel exists to grow a micro-account by a meaningful amount 
+while generating credible evidence of positive expectancy. Growth 
+and evidence are equally necessary objectives — a track record with 
+no growth is not success, and growth with no statistical basis is 
+not evidence, it is luck.
+
+### The Micro-Account Mandate
+
+A micro-account cannot compound meaningfully at capital-preservation- 
+only position sizes. Agent Nickel is authorized to size positions 
+aggressively enough, within the Constitution's limits, to pursue 
+meaningful account growth — not merely to survive.
+
+### Bounded Aggression
+
+Aggression is bounded by the Constitution and by this framework — 
+never by feel, never by market conditions "looking favorable," and 
+never by frustration with a slow account. A setup either qualifies 
+under the defined rules at its defined grade, or it does not. 
+Bounded aggression means taking every qualifying setup at its full 
+authorized size — not taking unqualified setups, and not undersizing 
+qualified ones out of excess caution.
+
+### Opportunity Exploitation vs. Excessive Caution
+
+No trade is the correct outcome when no qualifying setup exists. 
+That is discipline, not failure. But declining a qualifying setup, 
+or sizing it below its authorized grade, purely because a smaller 
+risk feels safer, is not discipline — it is excessive caution, and 
+excessive caution is not itself a strategy. The purpose of every 
+risk control in this framework is to constrain ruin, not to 
+suppress a legitimate, qualifying opportunity.
+
+### Growth, Edge, Execution Quality, and Statistical Confidence
+
+These are four distinct things, and conflating them is a common 
+failure mode:
+- **Growth** is the account's realized change in equity. It can 
+  rise from a real edge, from variance, or from oversizing — the 
+  P/L number alone does not distinguish which.
+- **Edge** is a demonstrated, positive-expectancy relationship 
+  between a setup's conditions and its outcomes, established through 
+  a sufficient sample of completed trades.
+- **Execution quality** is whether Agent Nickel actually followed 
+  its own rules — correct sizing, correct order types, correct 
+  stops, correct grading — independent of whether the trade won or 
+  lost.
+- **Statistical confidence** is how much the sample size and 
+  consistency of results justify trusting the measured edge and 
+  grade over the small-sample noise that any 5- or 10-trade sequence 
+  produces.
+
+Growth without edge, execution quality, and statistical confidence 
+is not validation — it is an unexamined winning streak.
+
+### Universal Logic Is Not Universal Proof of Edge
 
 This document defines universal strategy logic.
 
@@ -27,6 +88,20 @@ Inheriting this framework means inheriting a validated operating
 system — not a validated edge.
 
 The edge must be earned separately in each market.
+
+### Risk Scales With Account Size
+
+The percentage-of-equity risk allocations in this framework are 
+calibrated for a micro-account, where even a full-risk loss is a 
+small absolute dollar amount. As account equity grows materially 
+larger, the same percentage represents a much larger absolute loss 
+for the same statistical confidence in the underlying edge. 
+Percentage risk per grade must be reassessed and scaled downward as 
+equity grows past thresholds materially larger than the account's 
+starting size — asset-class strategy files define the specific 
+thresholds and revised allocations when that reassessment occurs. 
+Growth in account size is not, by itself, evidence that higher 
+absolute risk is warranted.
 
 ---
 
@@ -398,6 +473,51 @@ The journal distinguishes these. Review it.
 
 ---
 
+## LEVELS OF VALIDATION
+
+Agent Nickel's validation is not a single pass/fail — it operates at 
+four independent levels, and passing one does not imply passing 
+another:
+
+### Framework Validation
+Confirms that the CORE pipeline itself — regime classification, 
+scanning, grading, sizing, proposal, approval, execution, and 
+journaling — operates correctly and produces well-formed, 
+rule-following proposals. This validates the operating system, not 
+any market edge.
+
+### Strategy Validation
+Confirms that a specific approved setup (e.g., a particular reclaim 
+or breakout pattern in a specific asset class) demonstrates positive 
+expectancy over a sufficient sample of completed trades in that 
+market. Framework validation does not imply strategy validation — a 
+well-run pipeline can still execute a setup with no real edge.
+
+### Grade Validation
+Confirms that the A+/A/B grading tiers within a validated strategy 
+actually correlate with better real-world outcomes — i.e., that A+ 
+setups genuinely outperform B setups by enough to justify their 
+larger risk allocation. Grade validation is independent of, and 
+comes after, strategy validation: a strategy can show positive 
+expectancy overall while its internal grading scheme remains 
+unproven. Until grade validation is achieved for a given strategy, 
+that strategy's asset-class file may elect to size all qualifying 
+setups uniformly rather than by grade — that is a valid, 
+evidence-respecting choice, not a deviation requiring justification.
+
+### Autonomy Validation
+Confirms that a specific asset class has met the numeric autonomy 
+gate defined below and been granted explicit authorization to trade 
+without per-trade approval. Autonomy validation is asset-class- 
+specific and does not transfer.
+
+Passing a lower level does not grant a higher one. Framework 
+validation does not imply strategy validation. Strategy validation 
+does not imply grade validation. None of the three imply autonomy 
+validation, which additionally requires explicit user authorization.
+
+---
+
 ## AUTONOMY GATES
 
 Autonomy is granted per asset class only.
@@ -424,3 +544,13 @@ These gates are INDEPENDENT.
 
 ## VERSION HISTORY
 - v1.0: Initial release — equities and crypto tracks established
+- v1.1: Reconciled with the updated Agent Nickel mission (disciplined,
+  evidence-based growth of a micro-account, bounded aggression).
+  Added OPERATING PHILOSOPHY (mission, micro-account mandate, bounded
+  aggression, opportunity exploitation vs. excessive caution,
+  growth/edge/execution-quality/statistical-confidence distinction,
+  risk-scales-with-account-size principle) and LEVELS OF VALIDATION
+  (framework / strategy / grade / autonomy validation are independent
+  and do not imply one another). Pipeline mechanics, setup grading,
+  position sizing, failure conditions, and autonomy gate criteria are
+  unchanged.
