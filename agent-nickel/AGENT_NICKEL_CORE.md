@@ -1,5 +1,5 @@
 # Agent Nickel Core Strategy — Universal Logic
-## Version 1.1
+## Version 1.2
 
 This document defines the universal strategy logic that governs 
 all Agent Nickel trading activity regardless of asset class.
@@ -542,7 +542,114 @@ These gates are INDEPENDENT.
 
 ---
 
+## INITIAL VALIDATION HORIZON
+
+Agent Nickel's initial live-validation program should be evaluated
+over approximately 60–90 calendar days.
+
+The purpose of this horizon is not to achieve a predetermined dollar
+account balance.
+
+The objective is to accumulate sufficient live evidence to evaluate:
+
+- strategy expectancy;
+- execution reliability;
+- drawdown behavior;
+- regime dependence;
+- setup-grade predictive value;
+- and readiness for continued validation, expanded scope, increased
+  capital allocation, or autonomy.
+
+### Classification
+
+At the end of the evaluation horizon, results must be classified as
+one of the following, based on the totality of evidence rather than
+trade count or calendar elapsed alone:
+
+- **PROMISING** — positive expectancy with supporting execution,
+  regime, and grade evidence. Warrants continuing or expanding
+  validation.
+- **INCONCLUSIVE** — the available sample or evidence is not
+  sufficient to make a responsible determination. Validation
+  continues unchanged; the strategy is not altered merely to force
+  an answer.
+- **NEGATIVE** — evidence indicates the tested strategy likely lacks
+  sufficient expectancy under the conditions observed. The strategy
+  is not scaled; it is diagnosed before any further live deployment.
+
+A small sample with weak, noise-level effect size (e.g., marginally
+positive expectancy over very few trades) should generally be
+classified INCONCLUSIVE, not PROMISING — a positive number alone is
+not evidence of edge, per the growth/edge/execution-quality/
+statistical-confidence distinction above. Conversely, a strong,
+consistent effect across regimes with a modest sample may be
+classified PROMISING even if it falls short of any specific
+trade-count target.
+
+### Benchmark Reference
+
+This section does not define its own numeric thresholds for what
+qualifies as PROMISING. Evaluate results against the Universal
+Autonomy Gate minimums defined above, as specialized by the
+applicable active asset-class strategy file (e.g.,
+AGENT_NICKEL_EQUITIES.md's autonomy gate section for Track 1). Those
+numbers are the operative benchmark; this section governs only how
+the calendar horizon and evidence quality are weighed together
+against them — not what specific expectancy or profit-factor figures
+qualify. If the Universal Autonomy Gate or an asset-class file's
+specialization of it changes, classification under this section
+changes with it automatically; this section does not need to be
+re-amended to stay in sync.
+
+### Classification Is a Human Decision
+
+Agent Nickel may calculate the relevant metrics, summarize the
+evidence, and recommend a classification at the end of the horizon.
+The final PROMISING / INCONCLUSIVE / NEGATIVE determination is made
+by the user, not autonomously by Agent Nickel or by Claude Code
+acting on its behalf.
+
+A classification, however determined, grants no additional authority
+by itself. It does not itself authorize increased risk, expanded
+scope, additional capital allocation, or autonomy — any of those
+still requires its own separate, explicit authorization per the
+Constitution and the applicable strategy file.
+
+### Calendar Discipline
+
+Expiration of the 60–90-day horizon does not itself authorize
+increased risk, expanded scope, or autonomy, nor does it require
+abandonment of an otherwise promising strategy when the available
+sample remains insufficient.
+
+Calendar pressure must never be used to manufacture trades, weaken
+setup requirements, increase unauthorized risk, or otherwise alter
+strategy discipline. If the horizon elapses with an INCONCLUSIVE
+result, the correct response is to continue validation under
+unchanged rules — not to loosen the strategy in search of a faster
+answer. This is the same principle as Distinguishing Strategy
+Failure from Discipline above, applied to the calendar instead of to
+a losing streak.
+
+---
+
 ## VERSION HISTORY
+- v1.2: Added INITIAL VALIDATION HORIZON — establishes that Agent
+  Nickel's initial live-validation program is evaluated over
+  approximately 60–90 calendar days against a PROMISING /
+  INCONCLUSIVE / NEGATIVE classification based on evidence quality,
+  not a dollar target or raw trade count. Placed here rather than in
+  an asset-class strategy file because it is an experiment-level
+  objective, not a setup-specific trading mechanic — it applies
+  uniformly to any current or future asset class. References the
+  existing Universal Autonomy Gate minimums as its benchmark rather
+  than defining new numeric thresholds, so the two stay in sync
+  automatically. Makes explicit that classification is a human
+  decision, that it grants no authority by itself, and that calendar
+  pressure must never be used to manufacture trades, weaken setup
+  criteria, or increase risk. Motivated by an explicit decision to
+  decouple Agent Nickel's validation window from any personal dollar
+  deadline.
 - v1.0: Initial release — equities and crypto tracks established
 - v1.1: Reconciled with the updated Agent Nickel mission (disciplined,
   evidence-based growth of a micro-account, bounded aggression).
