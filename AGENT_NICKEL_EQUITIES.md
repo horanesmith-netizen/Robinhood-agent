@@ -889,9 +889,9 @@ VERSION HISTORY
 
 v2.0 — Reconciled Build
 
-* Supersedes v1.0, the only version previously committed to this repository. Consolidates v1.1 through v1.5 (produced across separate sessions, never previously pushed — see the Reconciliation note above) into a single authoritative version.
-* Re-cited against CLAUDE.md V1.4, which merges the Initial Validation Flat-Risk Exception (originally drafted against a since-superseded V1.3) with a separately-drafted V1.3 Mission amendment — see CLAUDE.md's own Version History for that reconciliation.
-* No rules, numbers, or thresholds changed from v1.5 in this consolidation — only version numbering and Constitutional citations were updated to match the merged V1.4.
+* Supersedes v1.0, the only version previously committed to this repository. Consolidates v1.1 through v1.5 (produced in a separate planning conversation, never previously pushed to this repository) into a single authoritative version.
+* Re-cited against CLAUDE.md V1.4, which added the Initial Validation Flat-Risk Exception as a new amendment to §2, alongside the existing V1.3 Mission section already in this repository's committed history (commit `9f81c89`) — see CLAUDE.md's own Version History for the corrected account.
+* No rules, numbers, or thresholds changed from v1.5 in this consolidation — only version numbering and Constitutional citations were updated to match V1.4.
 
 v1.5 — Flat-Risk Mission Realignment
 
