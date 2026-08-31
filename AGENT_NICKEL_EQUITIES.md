@@ -1,8 +1,16 @@
 AGENT NICKEL — EQUITIES STRATEGY
 
-Version 2.1 — Grading Mechanic Fix
+Version 2.2 — Constitutional Reconciliation Blocker Flagged
 
 Track 1 — Equities / SPY
+
+⚠️ CONSTITUTIONAL RECONCILIATION BLOCKER — NOT EXECUTION-READY UNDER CONSTITUTION V1.5
+
+Agent Nickel Constitution V1.5 Section 5 requires every active asset-class strategy to operate under an explicitly authorized hard single-position notional exposure ceiling appropriate to that asset and validation phase.
+
+This document does not yet define one. No exposure ceiling number is proposed here.
+
+Until an operating exposure ceiling is explicitly authorized and reconciled into this document, Equities is NOT execution-ready under Constitution V1.5. This is a tracked reconciliation blocker, not a silent gap — it is also recorded in CLAUDE.md V1.5's Version History. Live trading remains additionally gated by the Technical Preconditions in Section 28 / README.md regardless of this blocker's resolution.
 
 This document defines the equities- and ETF-specific trading rules for Agent Nickel.
 
@@ -898,6 +906,11 @@ Live authorization requires successful Robinhood capability verification and sat
 ⸻
 
 VERSION HISTORY
+
+v2.2 — Constitutional Reconciliation Blocker Flagged
+
+* Added a top-of-file blocker notice: Constitution V1.5 Section 5 requires every active asset-class strategy to operate under an explicitly authorized hard single-position notional exposure ceiling. This document does not yet define one for equities. No number is proposed or derived by this change — it only flags the gap so it is a tracked reconciliation item rather than a silent omission. Corresponding note added to CLAUDE.md V1.5's Version History.
+* Equities is NOT execution-ready under Constitution V1.5 until this is resolved.
 
 v2.1 — Grading Mechanic Fix
 
