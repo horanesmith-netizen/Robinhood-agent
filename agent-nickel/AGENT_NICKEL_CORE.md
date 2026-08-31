@@ -1,5 +1,5 @@
 # Agent Nickel Core Strategy — Universal Logic
-## Version 1.3
+## Version 1.4
 
 This document defines the universal strategy logic that governs 
 all Agent Nickel trading activity regardless of asset class.
@@ -411,7 +411,7 @@ Nickel never asks what you think the market will do.
 
 ### Order Types
 
-Per Constitution V1.5 Section 8: passive bounded execution is the default. Marketable-limit execution is an exception, available only for the scenarios the Constitution names, and requires explicit authorization plus a documented execution-speed rationale in the governing asset-class strategy. CORE does not pre-authorize a tolerance for any scenario or asset class — the asset-class strategy sets its own, never exceeding the Constitution's absolute 1.0% ceiling.
+Per Constitution V1.5 Section 8: passive bounded execution is the default. Marketable-limit execution is an exception — the Constitution does not enumerate a fixed list of eligible scenarios; it requires only (1) explicit authorization in the governing strategy and (2) a documented execution-speed rationale, with any authorized tolerance capped at the Constitution's absolute 1.0% ceiling. CORE, itself a governing document under the Constitution's hierarchy (Section 1), exercises that delegated authority below for the scenarios where a universal rationale applies; anything not explicitly authorized here or by the applicable asset-class strategy remains passive limit by default. An asset-class strategy may impose a stricter rule than CORE's defaults below (e.g., passive-limit-only for a given scenario), but may not authorize a scenario or tolerance beyond what CORE and the Constitution permit.
 
 | Scenario | Order Type |
 |----------|-----------|
@@ -419,11 +419,11 @@ Per Constitution V1.5 Section 8: passive bounded execution is the default. Marke
 | Breakout entry (Setup 2/3) | Passive limit by default. Marketable limit only if the asset-class strategy explicitly authorizes it for this scenario with a documented execution-speed rationale, at a tolerance it sets — never exceeding the Constitution's absolute 1.0% ceiling |
 | Stop loss | Limit order at stop price |
 | Take profit | Limit order at target price |
-| Time stop exit | Passive limit by default. Marketable limit only if the asset-class strategy explicitly authorizes it for this scenario (passive limits not filling is the Constitution's named rationale for this exception), at a tolerance it sets — never exceeding the Constitution's absolute 1.0% ceiling |
-| Emergency exit | **Not yet resolved — see note below** |
+| Time stop exit | Passive limit by default. Marketable limit only if the asset-class strategy explicitly authorizes it for this scenario (passive limits not filling is CORE's rationale for permitting this exception), at a tolerance it sets — never exceeding the Constitution's absolute 1.0% ceiling |
+| Emergency exit | Marketable limit, authorized directly by CORE — see rationale below. Tolerance set by the asset-class strategy, or the Constitution's absolute 1.0% ceiling if the asset-class strategy sets none |
 | True market orders | NEVER — prohibited by Constitution |
 
-**Open item — emergency exit order type:** Constitution V1.5 Section 8 names exactly two marketable-limit exceptions: breakout entries and time-stop exits. An emergency/fail-safe exit under a constitutional circuit breaker is not one of them, even though guaranteeing an exit is arguably most urgent in that scenario. CORE may not itself expand marketable-limit authority beyond what the Constitution names — Section 1 makes any such provision void and without effect. Until this is explicitly resolved, either by a Constitutional clarification adding this scenario to Section 8's named exceptions, or by some other means within proper governance authority, emergency exits default to the same passive-limit treatment as any other exit lacking a named exception — the conservative reading, consistent with the Constitution's own fail-safe principle (Section 16) of defaulting to the more restrictive option under genuine uncertainty. Flagged for a governance decision, not resolved here.
+**Emergency exit — CORE authorization.** Constitution V1.5 Section 8 does not enumerate a fixed list of scenarios eligible for marketable-limit execution; it requires only explicit authorization in the governing strategy plus a documented execution-speed rationale, capped at the absolute 1.0% tolerance ceiling. CORE exercises that delegated authority here: marketable-limit execution is explicitly authorized for emergency/fail-safe exits triggered by a constitutional circuit breaker. Documented rationale: during an emergency exit, execution speed is paramount, and the risk of a passive limit failing to fill is the least acceptable outcome of any exit scenario in this framework — the entire purpose of an emergency exit is to guarantee the position closes, not to optimize the closing price. Tolerance is capped at the Constitution's absolute 1.0% ceiling; an asset-class strategy may authorize a tighter tolerance for its instrument, or may impose a stricter rule (e.g., passive-limit-only) if warranted for that instrument's liquidity characteristics, but may not exceed 1.0% or extend this authorization to any scenario other than an emergency/circuit-breaker exit.
 
 ### Post-Order Verification
 Before reporting any trade as executed:
@@ -677,6 +677,29 @@ a losing streak.
 ---
 
 ## VERSION HISTORY
+- v1.4: Correction to v1.3's characterization of Constitution V1.5
+  Section 8, not a new architectural change. v1.3 described Section 8
+  as naming a fixed list of two marketable-limit exceptions (breakout
+  entries, time-stop exits) and treated "emergency exit" as therefore
+  unauthorizable by CORE. That was wrong: the actual ratified Section
+  8 text imposes a general rationale-based standard -- explicit
+  authorization in the governing strategy plus a documented
+  execution-speed rationale, capped at the 1.0% absolute tolerance
+  ceiling -- with no enumerated list at all. That enumeration was
+  V1.4-Constitution language, removed during the V1.5 rearchitecture.
+  Corrected every place in this document that carried the false
+  "named exceptions" framing (Step 8's intro note and table, and the
+  v1.3 Version History entry above). Emergency/fail-safe exits under
+  a constitutional circuit breaker are now explicitly authorized for
+  marketable-limit execution as one of CORE's own defined execution
+  scenarios (Step 8), exercising CORE's own delegated tier-2 authority
+  under Section 8's general standard -- not CORE granting itself
+  something the Constitution withheld. Documented rationale: during
+  an emergency exit, execution speed is paramount and a passive
+  limit's non-fill risk is the least acceptable outcome of any exit
+  scenario in this framework. Tolerance remains capped at the
+  Constitution's absolute 1.0% ceiling; an asset-class strategy may
+  still impose a stricter rule for its instrument.
 - v1.3: Reconciled against Constitution V1.5. Three fixes:
   1. **R:R tautology (Step 5, Take Profit).** Take Profit was
      previously calculated as Entry + (Stop Distance × R:R multiple)
@@ -692,21 +715,20 @@ a losing streak.
      procedure. No independent target identifiable = NO TRADE.
   2. **Marketable-limit defaults swept against Constitution V1.5
      Section 8 (Step 8's Order Types table, Step 4's entry triggers,
-     Step 5's Time Stop, and Step 6's proposal template).** V1.5
-     permits marketable-limit execution only for breakout entries and
-     time-stop exits, each requiring the asset-class strategy's own
-     explicit authorization, documented execution-speed rationale,
-     and tolerance (capped at the Constitution's absolute 1.0%
-     ceiling) -- CORE no longer pre-authorizes a tolerance for any
-     scenario. "Standard entry at zone," which CORE previously
-     defaulted to marketable limit, is not one of the Constitution's
-     two named exceptions; it is now passive limit by default,
-     matching what AGENT_NICKEL_EQUITIES.md had already independently
-     done to stay compliant. "Emergency exit" is flagged, not
-     resolved: it also is not one of the two named exceptions, and
-     CORE may not expand marketable-limit authority beyond what the
-     Constitution names (V1.5 Section 1: void and without effect).
-     It defaults to passive limit pending a governance decision.
+     Step 5's Time Stop, and Step 6's proposal template).** [Note:
+     this entry's original characterization of Section 8 as naming a
+     fixed list of two exceptions was corrected in v1.4 below --
+     Section 8 actually imposes a general rationale-based standard,
+     not an enumerated list.] Marketable-limit execution requires the
+     asset-class strategy's own explicit authorization, documented
+     execution-speed rationale, and tolerance (capped at the
+     Constitution's absolute 1.0% ceiling) for scenarios CORE has not
+     itself authorized -- CORE no longer pre-authorizes a tolerance
+     for any scenario on its own initiative. "Standard entry at
+     zone," which CORE previously defaulted to marketable limit, is
+     now passive limit by default, matching what
+     AGENT_NICKEL_EQUITIES.md had already independently done to stay
+     compliant.
   3. **Setup-grading risk tables (Step 3) and the SIZE step (Step 5)
      reconciled against V1.5 Sections 4 and 5.** The Step 3 A+/A/B
      "Risk Allocation" figures (5%/3%/1.5%) are relabeled as a
