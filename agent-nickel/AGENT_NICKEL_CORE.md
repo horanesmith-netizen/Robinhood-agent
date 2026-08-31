@@ -1,5 +1,5 @@
 # Agent Nickel Core Strategy — Universal Logic
-## Version 1.2
+## Version 1.3
 
 This document defines the universal strategy logic that governs 
 all Agent Nickel trading activity regardless of asset class.
@@ -195,8 +195,8 @@ Required conditions:
 1. Confirmed trend (Step 2a)
 2. Price at validated trend continuation zone (Step 2b/2c)
 3. 50 EMA confluent with zone (within 1% of zone price)
-4. Confirmation trigger present (Step 3b)
-5. R:R meets minimum for grade (Step 3c)
+4. Confirmation trigger present (Step 4)
+5. R:R meets minimum for grade (Step 5) — measured against an independently-identified target, never assumed from the stop distance
 6. Regime is Aggressive or Selective
 
 #### Setup 2: Session Breakout (Secondary)
@@ -223,8 +223,10 @@ Required conditions:
 
 ### Setup Grades
 
+**Risk-allocation status (Constitution V1.5 Section 4):** the "Differential Risk Allocation" figures below describe a candidate future schedule, not a currently authorized operating allocation. No current strategy is authorized above the Constitution's 3.0% unvalidated/uniform stop-risk ceiling, and any differential schedule above that ceiling requires completed Grade Validation, a specifically defined differential-risk schedule, quantitative risk analysis, and explicit authorization — none of which has occurred for these figures. Until then, every qualifying setup at every grade is sized uniformly at the ceiling authorized by the Constitution and the governing asset-class strategy (currently 3.0% or lower, per Step 5), regardless of grade. Grade classification itself remains fully in effect and is the basis for Grade Validation research — only the capital-at-risk figures below are inactive.
+
 #### Setup 1 Grading:
-| Grade | Criteria | Risk Allocation |
+| Grade | Criteria | Differential Risk Allocation (not currently authorized) |
 |-------|----------|----------------|
 | A+ | All 6 conditions met | 5% of equity |
 | A | 4-5 of 6 conditions met | 3% of equity |
@@ -232,14 +234,14 @@ Required conditions:
 | No Trade | Fewer than 3 | 0% |
 
 #### Setup 2 Grading (own scale):
-| Grade | Criteria | Risk Allocation |
+| Grade | Criteria | Differential Risk Allocation (not currently authorized) |
 |-------|----------|----------------|
 | A+ | Aggressive regime + volume >1.5x + clean range + strong momentum | 5% of equity |
 | A | Aggressive regime + volume >1.3x + clean range | 3% of equity |
 | B | Selective regime + volume above average | 1.5% of equity |
 
 #### Setup 3 Grading (own scale):
-| Grade | Criteria | Risk Allocation |
+| Grade | Criteria | Differential Risk Allocation (not currently authorized) |
 |-------|----------|----------------|
 | A | All conditions met in Aggressive regime | 3% of equity |
 | B | All conditions met in Selective regime | 1.5% of equity |
@@ -256,11 +258,11 @@ Required conditions:
   Fibonacci retracement measured from candle low to candle high
 - Candle color does not matter
 - Following candle must close GREEN
-- Entry: Close of confirmation candle (marketable limit)
+- Entry: Close of confirmation candle, order type per Step 8
 
 #### Trigger 2: Close Above Candle
 - Current candle closes above the HIGH of the previous candle
-- Entry: Close of that candle (marketable limit)
+- Entry: Close of that candle, order type per Step 8
 
 #### Volume Upgrade
 - If confirmation candle volume exceeds 1.3x 20-period average:
@@ -278,10 +280,23 @@ Required conditions:
 ## STEP 5: SIZE — POSITION SIZING
 
 ### Formula
-Risk $ = Account Equity × Risk % (by grade)
+Risk $ = Account Equity × Risk % (by grade, subject to Constitution V1.5 Section 4 — currently the 3.0% unvalidated/uniform ceiling or lower, uniform across grades; NOT the Differential Risk Allocation figures in Step 3, which are not currently authorized)
 Stop Distance % = |Entry Price - Stop Price| ÷ Entry Price
-Position Size $ = Risk $ ÷ Stop Distance %
+Risk-Based Position Size $ = Risk $ ÷ Stop Distance %
 
+### Exposure Ceiling (Constitution V1.5 Section 5)
+
+Risk-based sizing alone is not sufficient — a very tight stop distance can otherwise produce a risk-based position size far larger than any reasonable notional exposure. Per the Constitution's most-restrictive-rule, position size is also bounded by the applicable single-position notional exposure ceiling:
+
+Exposure-Based Position Size $ = Exposure Ceiling % × Account Equity
+
+Final Position Size $ = MIN(Risk-Based Position Size $, Exposure-Based Position Size $, available unleveraged buying power)
+
+Whichever constraint binds determines the actual position size. If the exposure ceiling binds, effective planned account risk is lower than the nominal risk-based figure — this is a deterministic reduction, not discretionary undersizing, and must be recorded in the journal (Step 9).
+
+The applicable exposure ceiling is defined by the governing asset-class strategy file, subject to the Constitution's 60% absolute never-exceed boundary — CORE does not set or infer one. If no asset-class-authorized exposure ceiling exists for the instrument being traded, exposure cannot be verified:
+
+**DO NOT TRADE.**
 
 ### Stop Placement
 - Long trades: Below zone OR below trigger candle wick — 
@@ -289,11 +304,33 @@ Position Size $ = Risk $ ÷ Stop Distance %
 - Never place stop inside the zone
 
 ### Take Profit
-- Minimum R:R by grade:
-  - A+: 3:1
-  - A: 2.5:1
-  - B: 2:1
-- Calculate: TP = Entry + (Stop Distance × R:R multiple)
+
+Take Profit is set independently of the required R:R minimum — it is never calculated by applying an R:R multiple to the stop distance. Doing so makes the R:R gate tautological: projected R:R would always exactly equal whichever minimum it is checked against, and could never actually fail.
+
+Instead, Take Profit is the nearest genuine, independently-identified market structure level beyond entry in the trade's direction:
+
+- **Setup 1 (Trend Continuation at Structure):** the Counter-Trend Zone already identified in Step 2b — the next significant opposing structure level. If no valid Counter-Trend Zone exists, condition 5 (Step 3) cannot be evaluated and Setup 1 does not qualify: NO TRADE.
+- **Setup 2 (Session Breakout) and Setup 3 (Volatility Compression Breakout):** the nearest independently-identified major support/resistance level beyond the breakout point, per the asset-class strategy's defined target methodology. If no such level can be identified, the setup does not qualify: NO TRADE.
+
+Never predict or estimate the target level in place of an actual identified structure level, and never widen or move the target merely to force a required R:R to be met.
+
+Projected R:R is then MEASURED, not assumed:
+
+Projected R:R = (Take Profit − Entry) ÷ (Entry − Stop)
+
+Minimum R:R by grade:
+- A+: 3:1
+- A: 2.5:1
+- B: 2:1
+
+This is now a genuine, falsifiable qualification gate — a setup with an independently-identified target too close to entry can and will fail it. To determine the grade a setup actually qualifies for:
+
+1. Measure Projected R:R once, from the independently-identified target.
+2. Starting from the highest grade the setup's *other* conditions (excluding the R:R condition itself) would otherwise support, check whether measured R:R meets that grade's minimum.
+3. If it does not, step down one grade (A+ → A → B) and recheck, provided the setup's other conditions still support that lower grade.
+4. If measured R:R does not meet even B's 2:1 minimum, the setup does not qualify at any grade: NO TRADE.
+
+Report the measured R:R — not an assumed one — in the trade proposal (Step 6).
 
 ### Partial Exit Rules
 - At 1.5R: Move stop to breakeven. No partial exit.
@@ -304,8 +341,8 @@ Position Size $ = Risk $ ÷ Stop Distance %
 
 ### Time Stop
 - If trade has not moved 0.5R in either direction 
-  after 3 primary timeframe candles: exit via 
-  marketable limit order.
+  after 3 primary timeframe candles: exit via the
+  order type authorized for this scenario (Step 8).
 - This is not a failure. It is thesis expiration.
 
 ---
@@ -324,12 +361,12 @@ DIRECTION: [LONG]
 SETUP TYPE: [1 / 2 / 3]
 SETUP GRADE: [A+ / A / B]
 CURRENT PRICE: $[X]
-PROPOSED ENTRY: $[X] (marketable limit)
-POSITION SIZE: $[X] ([X]% of equity)
+PROPOSED ENTRY: $[X] (order type per Step 8)
+POSITION SIZE: $[X] ([X]% of equity — binding constraint: risk-based / exposure-based / buying power)
 CAPITAL AT RISK: $[X] ([X]% of equity)
 STOP LOSS: $[X]
-TAKE PROFIT: $[X] (50% at 2R / trail remainder)
-EXPECTED R:R: [X]:1
+TAKE PROFIT: $[X] (independently-identified target, Step 5; 50% exit at 2R / trail remainder)
+PROJECTED R:R (measured against target, not assumed): [X]:1
 MARKET REGIME: [Aggressive / Selective / Defensive]
 SETUP RATIONALE:
 
@@ -373,15 +410,20 @@ Nickel never asks what you think the market will do.
 ## STEP 8: EXECUTE
 
 ### Order Types
+
+Per Constitution V1.5 Section 8: passive bounded execution is the default. Marketable-limit execution is an exception, available only for the scenarios the Constitution names, and requires explicit authorization plus a documented execution-speed rationale in the governing asset-class strategy. CORE does not pre-authorize a tolerance for any scenario or asset class — the asset-class strategy sets its own, never exceeding the Constitution's absolute 1.0% ceiling.
+
 | Scenario | Order Type |
 |----------|-----------|
-| Standard entry at zone | Marketable limit (±0.1% of price) |
-| Breakout entry (Setup 2/3) | Marketable limit (±0.2% of price) |
+| Standard entry at zone (Setup 1) | Passive limit, within the asset-class strategy's authorized entry range |
+| Breakout entry (Setup 2/3) | Passive limit by default. Marketable limit only if the asset-class strategy explicitly authorizes it for this scenario with a documented execution-speed rationale, at a tolerance it sets — never exceeding the Constitution's absolute 1.0% ceiling |
 | Stop loss | Limit order at stop price |
 | Take profit | Limit order at target price |
-| Time stop exit | Marketable limit at current bid/ask |
-| Emergency exit | Marketable limit at current bid/ask |
+| Time stop exit | Passive limit by default. Marketable limit only if the asset-class strategy explicitly authorizes it for this scenario (passive limits not filling is the Constitution's named rationale for this exception), at a tolerance it sets — never exceeding the Constitution's absolute 1.0% ceiling |
+| Emergency exit | **Not yet resolved — see note below** |
 | True market orders | NEVER — prohibited by Constitution |
+
+**Open item — emergency exit order type:** Constitution V1.5 Section 8 names exactly two marketable-limit exceptions: breakout entries and time-stop exits. An emergency/fail-safe exit under a constitutional circuit breaker is not one of them, even though guaranteeing an exit is arguably most urgent in that scenario. CORE may not itself expand marketable-limit authority beyond what the Constitution names — Section 1 makes any such provision void and without effect. Until this is explicitly resolved, either by a Constitutional clarification adding this scenario to Section 8's named exceptions, or by some other means within proper governance authority, emergency exits default to the same passive-limit treatment as any other exit lacking a named exception — the conservative reading, consistent with the Constitution's own fail-safe principle (Section 16) of defaulting to the more restrictive option under genuine uncertainty. Flagged for a governance decision, not resolved here.
 
 ### Post-Order Verification
 Before reporting any trade as executed:
@@ -417,10 +459,11 @@ Entry price:
 Proposed entry price:
 Slippage (actual vs proposed):
 Position size ($):
+Sizing constraint that bound (risk-based / exposure-based / buying power):
 Capital at risk ($):
 Stop price:
-Take profit price:
-Expected R:R:
+Take profit price (independently-identified target used):
+Projected R:R (measured against target, not assumed):
 Exit price:
 Exit reason:
 P/L ($):
@@ -634,6 +677,57 @@ a losing streak.
 ---
 
 ## VERSION HISTORY
+- v1.3: Reconciled against Constitution V1.5. Three fixes:
+  1. **R:R tautology (Step 5, Take Profit).** Take Profit was
+     previously calculated as Entry + (Stop Distance × R:R multiple)
+     — meaning projected R:R always exactly equaled whatever minimum
+     it was checked against, and could never actually fail. Take
+     Profit is now set independently, from a genuine identified
+     market-structure level (Setup 1: the Counter-Trend Zone already
+     identified in Step 2b, previously defined but unused; Setup 2/3:
+     the nearest independently-identified S/R level per the
+     asset-class strategy). Projected R:R is now measured against
+     that target, not assumed, and the minimum-R:R-by-grade table is
+     a genuine, falsifiable gate with an explicit grade-recalculation
+     procedure. No independent target identifiable = NO TRADE.
+  2. **Marketable-limit defaults swept against Constitution V1.5
+     Section 8 (Step 8's Order Types table, Step 4's entry triggers,
+     Step 5's Time Stop, and Step 6's proposal template).** V1.5
+     permits marketable-limit execution only for breakout entries and
+     time-stop exits, each requiring the asset-class strategy's own
+     explicit authorization, documented execution-speed rationale,
+     and tolerance (capped at the Constitution's absolute 1.0%
+     ceiling) -- CORE no longer pre-authorizes a tolerance for any
+     scenario. "Standard entry at zone," which CORE previously
+     defaulted to marketable limit, is not one of the Constitution's
+     two named exceptions; it is now passive limit by default,
+     matching what AGENT_NICKEL_EQUITIES.md had already independently
+     done to stay compliant. "Emergency exit" is flagged, not
+     resolved: it also is not one of the two named exceptions, and
+     CORE may not expand marketable-limit authority beyond what the
+     Constitution names (V1.5 Section 1: void and without effect).
+     It defaults to passive limit pending a governance decision.
+  3. **Setup-grading risk tables (Step 3) and the SIZE step (Step 5)
+     reconciled against V1.5 Sections 4 and 5.** The Step 3 A+/A/B
+     "Risk Allocation" figures (5%/3%/1.5%) are relabeled as a
+     candidate future differential schedule, explicitly not currently
+     authorized -- matching V1.5 Section 4's replacement of the old
+     permanent A+/A/B ceilings and its requirement that any future
+     differential schedule pass Grade Validation plus explicit
+     authorization first. Step 5's SIZE formula now applies the
+     Constitution's most-restrictive-rule explicitly: Final Position
+     Size = MIN(risk-based size, exposure-based size, buying power).
+     This is the CORE-level mechanism for V1.5 Section 5's new
+     notional-exposure-risk category; it does not depend on knowing
+     any asset-class file's actual exposure ceiling number, and
+     correctly forces "DO NOT TRADE" for any asset class -- currently
+     equities -- that has not yet authorized one, structurally
+     enforcing the blocker already flagged in
+     AGENT_NICKEL_EQUITIES.md v2.2.
+  Pipeline step order, regime classification, setup-type definitions
+  (aside from the R:R condition described above), partial-exit and
+  time-stop mechanics (aside from order-type sourcing), and autonomy
+  gate criteria are otherwise unchanged.
 - v1.2: Added INITIAL VALIDATION HORIZON — establishes that Agent
   Nickel's initial live-validation program is evaluated over
   approximately 60–90 calendar days against a PROMISING /
