@@ -1,5 +1,5 @@
 # Agent Nickel Core Strategy — Universal Logic
-## Version 1.4
+## Version 1.5 — RATIFIED
 
 This document defines the universal strategy logic that governs 
 all Agent Nickel trading activity regardless of asset class.
@@ -142,8 +142,21 @@ Before scanning any asset, classify the current market environment.
 - Account restrictions present
 - Capability verification not yet completed
 
-Asset-class specific regime instruments are defined in 
-their respective strategy files.
+Asset-class strategy files must define precise, deterministic criteria
+for any qualitative CORE regime descriptor required for classification,
+and for the specific instrument each descriptor is measured against.
+The indicator methodology CORE specifies (50 EMA, Daily timeframe) is
+fixed at the CORE level — only the instrument it is applied to is
+delegated. Asset-class criteria may specialize a descriptor's threshold
+but may not eliminate, reverse, or invert the relative ordering of the
+four regimes as CORE defines them, nor otherwise materially redefine
+the underlying concept. Whether a proposed specialization is a
+legitimate narrowing or a material redefinition is adjudicated as part
+of that asset-class strategy file's own ratification — not a
+determination Code or Nickel makes at runtime. If a required
+deterministic criterion has not been defined for the applicable asset
+strategy, the regime cannot be classified and the instrument is
+DO NOT TRADE.
 
 ---
 
@@ -253,8 +266,8 @@ Required conditions:
 
 ### Bullish Triggers (Long entries only)
 
-#### Trigger 1: Hammer + Confirmation
-- Hammer defined as: entire candle body above the 38.2% 
+#### Trigger 1: Upper-Body Rejection + Confirmation
+- Upper-Body Rejection defined as: entire candle body above the 38.2% 
   Fibonacci retracement measured from candle low to candle high
 - Candle color does not matter
 - Following candle must close GREEN
@@ -340,7 +353,7 @@ Report the measured R:R — not an assumed one — in the trade proposal (Step 6
 - Final exit: Trailing stop hit OR next major S/R level.
 
 ### Time Stop
-- If trade has not moved 0.5R in either direction 
+- If the trade has not achieved at least +0.5R MFE
   after 3 primary timeframe candles: exit via the
   order type authorized for this scenario (Step 8).
 - This is not a failure. It is thesis expiration.
@@ -417,11 +430,25 @@ Per Constitution V1.5 Section 8: passive bounded execution is the default. Marke
 |----------|-----------|
 | Standard entry at zone (Setup 1) | Passive limit, within the asset-class strategy's authorized entry range |
 | Breakout entry (Setup 2/3) | Passive limit by default. Marketable limit only if the asset-class strategy explicitly authorizes it for this scenario with a documented execution-speed rationale, at a tolerance it sets — never exceeding the Constitution's absolute 1.0% ceiling |
-| Stop loss | Limit order at stop price |
+| Stop loss | Broker-side conditional stop that converts upon trigger to a marketable-limit order — never a true market order; see Protective Stop authorization below |
 | Take profit | Limit order at target price |
 | Time stop exit | Passive limit by default. Marketable limit only if the asset-class strategy explicitly authorizes it for this scenario (passive limits not filling is CORE's rationale for permitting this exception), at a tolerance it sets — never exceeding the Constitution's absolute 1.0% ceiling |
 | Emergency exit | Marketable limit, authorized directly by CORE — see rationale below. Tolerance set by the asset-class strategy, or the Constitution's absolute 1.0% ceiling if the asset-class strategy sets none |
 | True market orders | NEVER — prohibited by Constitution |
+
+**Protective Stop — CORE authorization.** Protective exits must use a
+broker-side conditional stop mechanism — not a plain resting limit
+order live and executable before the stop trigger is reached, and not
+a synthetic or software-monitored stop dependent on Agent Nickel's own
+uptime rather than standing broker-side protection. Upon triggering,
+the stop converts to a marketable-limit order — never a true,
+unconditional market order; the Constitution's prohibition remains
+absolute — at a tolerance no wider than the applicable Constitutional
+ceiling, mirroring the mechanic already authorized for Emergency Exit.
+The exact supported order type, trigger behavior, fill behavior, and
+gap/slippage characteristics must be verified before live use. If the
+authorized strategy's required protective-exit behavior cannot be
+verified, DO NOT TRADE.
 
 **Emergency exit — CORE authorization.** Constitution V1.5 Section 8 does not enumerate a fixed list of scenarios eligible for marketable-limit execution; it requires only explicit authorization in the governing strategy plus a documented execution-speed rationale, capped at the absolute 1.0% tolerance ceiling. CORE exercises that delegated authority here: marketable-limit execution is explicitly authorized for emergency/fail-safe exits triggered by a constitutional circuit breaker. Documented rationale: during an emergency exit, execution speed is paramount, and the risk of a passive limit failing to fill is the least acceptable outcome of any exit scenario in this framework — the entire purpose of an emergency exit is to guarantee the position closes, not to optimize the closing price. Tolerance is capped at the Constitution's absolute 1.0% ceiling; an asset-class strategy may authorize a tighter tolerance for its instrument, or may impose a stricter rule (e.g., passive-limit-only) if warranted for that instrument's liquidity characteristics, but may not exceed 1.0% or extend this authorization to any scenario other than an emergency/circuit-breaker exit.
 
@@ -430,6 +457,17 @@ Before reporting any trade as executed:
 - Confirm fill with Robinhood account state
 - Confirm stop order is active
 - Confirm take profit order is active
+- Before simultaneous protective and target orders are relied upon live,
+  verify that they cannot jointly execute beyond the total open position
+  quantity. Verified broker-native one-cancels-other functionality is
+  preferred where supported. Where OCO is not supported, an equivalent
+  deterministic cancel-on-fill procedure is acceptable only if it states
+  an explicit maximum window between one order filling and the other
+  being confirmed canceled. If this mutual-exclusion behavior cannot be
+  verified, simultaneous protective and target orders may not be relied
+  upon live: DO NOT TRADE. Partial-fill handling for either order remains
+  a separate concern, governed downstream by the applicable asset-class
+  strategy.
 - Report actual fill price (not proposed price)
 
 Never describe a trade as EXECUTED unless 
@@ -490,20 +528,84 @@ Post-trade notes:
 - 1-2 consecutive losses
 - Account down less than 10% from peak
 
-### Warning — Reduce to B setups only
-- 3 consecutive losses
-- Account down 10-20% from peak
+### Failure-Tier Precedence
+- When conditions for more than one failure tier are simultaneously
+  satisfied, the most severe applicable tier governs.
+- A lower-severity tier may not override, downgrade, or provide a
+  resumption pathway around a higher-severity tier that remains active.
+
+### Warning — Suspend new entries, review, and report
+- Triggered by either:
+  - 3 consecutive losses
+  - Account down 10-20% from peak
+- Suspend new position initiation.
+- Conduct a review for governing violations, execution errors,
+  and strategy-failure conditions.
+- Report the review conclusion to the operator.
+- If no governing violation, execution error, or strategy-failure
+  condition is found, trading may resume under the existing authorized
+  strategy and risk rules only after operator acknowledgment.
+- If the Warning review identifies a governing violation, execution
+  error, or strategy-failure condition, trading remains suspended and
+  the matter escalates to Pause for operator review, regardless of
+  whether the finding independently satisfies a Pause trigger listed
+  below. Trading may not resume through the Warning acknowledgment
+  pathway once escalated.
+- No grade-specific filtering applies during or after this Warning
+  review.
+- Warning is distinct from Pause: Warning uses this bounded review
+  and operator-acknowledgment path; Pause requires stopping trading
+  and reviewing all recent trades under the heavier Pause condition.
 
 ### Pause — Stop trading, review all recent trades
-- 4 consecutive losses
-- Account down 20% from peak
-- Any constitutional violation
+- Triggered by any of:
+  - 4 consecutive losses
+  - Account down 20% from peak
+  - Any constitutional violation
+  - Escalation from a Warning review under the rule above
+- Trading may resume from Pause only after the triggering condition
+  and review findings have been addressed and the operator gives
+  explicit authorization to resume. Mere acknowledgment of a review,
+  as permitted under the Warning pathway, is insufficient.
+- Resumption returns to ordinary trading under the existing authorized
+  strategy and risk rules. Operator authorization does not waive an
+  unresolved governing violation, execution error, strategy-failure
+  condition, or higher-severity failure tier.
 
 ### Full Stop — Strategy review required
-- Account down 40% from peak
-- Negative expectancy after 20 completed trades
-- Profit factor below 1.0 after 20 completed trades
-- Repeated constitutional violations
+- Triggered by any of:
+  - Account down 40% from peak
+  - Negative expectancy after 20 completed trades
+  - Profit factor below 1.0 after 20 completed trades
+  - Repeated constitutional violations
+- "Repeated constitutional violations" means either:
+  - Any additional constitutional violation occurring while a Pause
+    remains unresolved and before operator reauthorization to resume
+    has completed, where that Pause was triggered — directly, or via
+    Warning-review escalation where at least one underlying finding
+    was a constitutional violation — by a prior constitutional
+    violation; or
+  - A violation of the same constitutional provision occurring after
+    a prior Pause for violation of that provision was resolved and
+    operator reauthorization to resume had completed.
+- Full Stop has no ordinary resumption pathway.
+- Resumption requires:
+  1. Formal review determining whether the trigger reflects:
+     - pure strategy failure — the framework operated as designed and
+       the strategy itself lacks demonstrated edge;
+     - a framework or mechanic defect — a CORE-level or
+       asset-strategy-level rule did not behave as intended; or
+     - a constitutional or governance defect.
+     This determination is a human judgment made through review,
+     consistent with how strategy failure versus discipline is
+     distinguished elsewhere in this document.
+  2. Resolution of the triggering condition.
+  3. For a confirmed framework, mechanic, constitutional, or governance
+     defect, completion of the governing document's own amendment
+     process before resumption. No amendment is required solely because
+     a strategy demonstrates pure strategy failure.
+  4. Explicit operator authorization to resume, given only once
+     requirements 1-3 are complete.
 
 ### Distinguishing Strategy Failure from Discipline
 A strategy losing money because no setups qualify 
@@ -677,6 +779,47 @@ a losing streak.
 ---
 
 ## VERSION HISTORY
+- v1.5 RATIFIED: Full-document reconciliation against
+  Constitution V1.5 and the requirement that every reachable CORE state
+  have an authorized next action without Code inventing policy.
+  1. **Time Stop (Step 5).** Replaced the ambiguous "moved 0.5R in
+     either direction" rule with a +0.5R MFE thesis-progress test after
+     3 primary-timeframe candles.
+  2. **Regime Classification (Step 1).** Requires asset-class strategies
+     to define deterministic criteria for qualitative CORE regime
+     descriptors while preserving CORE's fixed 50 EMA / Daily
+     methodology and regime ordering; undefined required criteria make
+     the instrument DO NOT TRADE.
+  3. **Trigger terminology (Step 4).** Renamed "Hammer + Confirmation"
+     to "Upper-Body Rejection + Confirmation" without changing the
+     trigger mathematics.
+  4. **Protective Stop (Step 8).** Removed the invalid plain-limit
+     protective-stop mechanic. Protective stops must be broker-side,
+     conditional, verified before live use, and convert on trigger to a
+     constitutionally bounded marketable-limit order — never a true
+     market order.
+  5. **Exit-order mutual exclusion (Step 8).** Requires verified
+     broker-native OCO where supported, or a deterministic cancel-on-fill
+     procedure with an explicit maximum cancellation-confirmation window,
+     so protective and target orders cannot jointly execute beyond the
+     open position quantity. Unverified behavior is DO NOT TRADE.
+  6. **Failure-state machine.** Warning now has explicit clean and dirty
+     review branches; dirty findings escalate to Pause. Pause has an
+     explicit resolution + operator-authorization resume path. Full Stop
+     has a formal review, resolution, amendment-if-required, and operator
+     authorization path. Failure-tier precedence prevents lower-tier
+     override or escape from an unresolved higher tier.
+  7. **Repeated constitutional violations.** Defined deterministically as
+     either an additional constitutional violation during an unresolved
+     Pause that arose directly from a prior constitutional violation or
+     through Warning-review escalation where at least one underlying
+     finding was a constitutional violation, or recurrence of the same
+     constitutional provision after that provision's prior Pause was
+     resolved and operator reauthorization completed.
+  8. **Warning grade filtering.** Retired the stale "Reduce to B setups
+     only" response. Warning does not alter grade-specific deployment or
+     introduce a new risk percentage.
+
 - v1.4: Correction to v1.3's characterization of Constitution V1.5
   Section 8, not a new architectural change. v1.3 described Section 8
   as naming a fixed list of two marketable-limit exceptions (breakout
