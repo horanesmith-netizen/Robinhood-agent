@@ -1,5 +1,5 @@
 # Agent Nickel Core Strategy — Universal Logic
-## Version 1.5 — RATIFIED
+## Version 1.6 — Ratification Candidate
 
 This document defines the universal strategy logic that governs 
 all Agent Nickel trading activity regardless of asset class.
@@ -245,6 +245,16 @@ Required conditions:
 | A | 4-5 of 6 conditions met | 3% of equity |
 | B | 3 of 6 conditions met | 1.5% of equity |
 | No Trade | Fewer than 3 | 0% |
+
+##### Setup 1 Asset-Class Grading Specialization
+
+An asset-class strategy may define deterministic asset-specific grading criteria for Setup 1 in place of CORE's generic six-condition count-based grading table only when the specialization is explicitly adjudicated and ratified at the asset-class document level.
+
+The specialized criteria must remain materially traceable to Setup 1's CORE-defined qualification and grading concepts and may not substitute a grading methodology unrelated to the underlying Setup 1 framework. The specialization must preserve the A+/A/B/NO TRADE hierarchy and may not independently create, increase, or modify grade-dependent stop-risk, exposure, execution, or other capital authority.
+
+Whether a proposed Setup 1 grading specialization is a legitimate asset-specific implementation or a material redefinition of the underlying Setup 1 grading concept is a governance-time determination. Nickel and Code may not make that determination at runtime. If a required Setup 1 specialization has not been explicitly ratified, the conflicting asset-level grading mechanic may not be used as a basis for Grade Validation or grade-dependent capital authority.
+
+Grades generated under an explicitly ratified Setup 1 specialization may serve as valid Grade Validation evidence, subject to all Constitution and CORE requirements for treatment independence, provenance integrity, sample sufficiency, and demonstrated predictive differentiation. Passing Grade Validation does not itself authorize differential capital treatment; such authority requires separate explicit authorization under the governing hierarchy.
 
 #### Setup 2 Grading (own scale):
 | Grade | Criteria | Differential Risk Allocation (not currently authorized) |
@@ -779,6 +789,7 @@ a losing streak.
 ---
 
 ## VERSION HISTORY
+- v1.6 Ratification Candidate: Adds one narrowly scoped governance provision adjacent to Setup 1 grading. Asset-class strategies may define deterministic Setup 1 grading specializations only when explicitly adjudicated and ratified at the asset-class level; specialized criteria must remain materially traceable to CORE's Setup 1 qualification and grading concepts, preserve the A+/A/B/NO TRADE hierarchy, and may not independently create or modify capital authority. Explicitly ratified specialized grades may serve as Grade Validation evidence subject to existing Constitution and CORE evidence requirements, but Grade Validation does not itself authorize differential capital treatment. No other CORE mechanic is changed.
 - v1.5 RATIFIED: Full-document reconciliation against
   Constitution V1.5 and the requirement that every reachable CORE state
   have an authorized next action without Code inventing policy.
