@@ -721,4 +721,4 @@ Cryptocurrency permitted for BTC/USD and ETH/USD subject to applicable strategy 
 
 ---
 
-**END — AGENT NICKEL CONSTITUTION V1.5 — RATIFICATION CANDIDATE**
+**END — AGENT NICKEL CONSTITUTION V1.5 — RATIFIED**

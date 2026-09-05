@@ -1,5 +1,5 @@
 # Agent Nickel Core Strategy — Universal Logic
-## Version 1.6 — Ratification Candidate
+## Version 1.6 — RATIFIED
 
 This document defines the universal strategy logic that governs 
 all Agent Nickel trading activity regardless of asset class.
@@ -789,7 +789,7 @@ a losing streak.
 ---
 
 ## VERSION HISTORY
-- v1.6 Ratification Candidate: Adds one narrowly scoped governance provision adjacent to Setup 1 grading. Asset-class strategies may define deterministic Setup 1 grading specializations only when explicitly adjudicated and ratified at the asset-class level; specialized criteria must remain materially traceable to CORE's Setup 1 qualification and grading concepts, preserve the A+/A/B/NO TRADE hierarchy, and may not independently create or modify capital authority. Explicitly ratified specialized grades may serve as Grade Validation evidence subject to existing Constitution and CORE evidence requirements, but Grade Validation does not itself authorize differential capital treatment. No other CORE mechanic is changed.
+- v1.6 RATIFIED: Adds one narrowly scoped governance provision adjacent to Setup 1 grading. Asset-class strategies may define deterministic Setup 1 grading specializations only when explicitly adjudicated and ratified at the asset-class level; specialized criteria must remain materially traceable to CORE's Setup 1 qualification and grading concepts, preserve the A+/A/B/NO TRADE hierarchy, and may not independently create or modify capital authority. Explicitly ratified specialized grades may serve as Grade Validation evidence subject to existing Constitution and CORE evidence requirements, but Grade Validation does not itself authorize differential capital treatment. No other CORE mechanic is changed.
 - v1.5 RATIFIED: Full-document reconciliation against
   Constitution V1.5 and the requirement that every reachable CORE state
   have an authorized next action without Code inventing policy.
